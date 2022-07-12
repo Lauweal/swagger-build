@@ -23,9 +23,9 @@ process.on('message', (msg: string) => {
   const bodyName = bodyItems[0] ? getType(bodyItems[0]) : undefined;
 
 
-  const query = paramsItems.length ? [`interface ${paramsName} {\n`, paramsItems.reduce((a: string[], b) => {
-    return a.concat([`${b.name}${!b.required ? '?' : ''}:${getType(b)}`]);
-  }, []), '}\n'].join('') : '';
+  const query = paramsItems.length ? [`export interface ${paramsName} {\n`, ...paramsItems.reduce((a: string[], b) => {
+    return a.concat([`${b.name}${!b.required ? '?' : ''}:${getType(b)}, ${b.description ? `// ${b.description}` : ''} \n`]);
+  }, []), '}\n'].join("") : '';
 
   const paramsStr = paramsItems.length ? `params: ${name.replace(name[0], name[0].toUpperCase())}Params` : '';
   const bodyStr = bodyName ? `body: ${bodyName}` : '';
